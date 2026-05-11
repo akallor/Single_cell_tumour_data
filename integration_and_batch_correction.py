@@ -18,3 +18,15 @@ sc.pp.pca(adata, use_highly_variable=True)
 
 # Harmony integration
 sce.pp.harmony_integrate(adata, "sample")
+
+##Clustering & cell type annotation
+
+# Neighbourhood graph and UMAP on Harmony embedding
+sc.pp.neighbors(adata, use_rep="X_pca_harmony")
+sc.tl.umap(adata)
+
+# Leiden clustering (tune resolution 0.3–1.0)
+sc.tl.leiden(adata, resolution=0.5)
+
+# Visualise clusters coloured by sample and condition
+sc.pl.umap(adata, color=["leiden", "sample", "condition"])
